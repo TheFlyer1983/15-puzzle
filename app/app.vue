@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="text-3xl font-bold underline flex justify-center">Hello World</span>
+    <span class="flex justify-center text-3xl font-bold underline">Hello World</span>
     <NuxtRouteAnnouncer />
     <NuxtWelcome />
   </div>
