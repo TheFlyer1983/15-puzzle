@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "lint:ox": "oxlint .",
+    "lint": "pnpm run lint:ox"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "oxfmt": "^0.54.0",
+    "oxlint": "^1.69.0",
     "typescript": "^6.0.3"
   }
 }
