@@ -22,7 +22,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Run oxlint
         run: pnpm lint:ox
-  
+
   format-check:
     runs-on: ubuntu-latest
     steps:
