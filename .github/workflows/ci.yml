@@ -2,8 +2,6 @@ name: CI
 on:
   pull_request:
     branches: [main, staging, dev]
-env:
-  buildNumber: $(date +'%Y%m%d')-${{ github.run_number }}
 
 jobs:
   format-check:
