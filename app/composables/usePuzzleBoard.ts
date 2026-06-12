@@ -131,12 +131,27 @@ export function createRandomSolvableTiles(random: RandomSource = Math.random): T
 export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
   const random = options.random ?? Math.random;
   const getStartingTiles = () => options.initialTiles ?? createRandomSolvableTiles(random);
-  const startingTiles = ref<TileValue[]>([...getStartingTiles()]);
+  const shouldHydrateState = options.initialTiles === undefined && options.random === undefined;
+  const createState = <T>(key: string, initialValue: () => T) => {
+    if (!shouldHydrateState) {
+      return ref<T>(initialValue());
+    }
 
-  const tiles = ref<TileValue[]>([...startingTiles.value]);
-  const moves = ref(0);
+    const state = useState<T>(key, initialValue);
+
+    if (state.value === undefined) {
+      state.value = initialValue();
+    }
+
+    return state;
+  };
+  const startingTiles = createState('puzzle-starting-tiles', () => [...getStartingTiles()]);
+
+  const tiles = createState('puzzle-tiles', () => [...startingTiles.value]);
+  const moves = createState('puzzle-moves', () => 0);
 
   const emptyTileIndex = computed(() => tiles.value.findIndex((tile) => tile === null));
+  const isComplete = computed(() => isSolved(tiles.value));
 
   function isAdjacentToEmpty(index: number) {
     const tilePosition = getTilePosition(index);
@@ -150,7 +165,7 @@ export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
   }
 
   function moveTile(index: number) {
-    if (!isAdjacentToEmpty(index)) {
+    if (isComplete.value || !isAdjacentToEmpty(index)) {
       return;
     }
 
@@ -183,6 +198,7 @@ export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
     tiles: readonly(tiles),
     moves: readonly(moves),
     emptyTileIndex,
+    isComplete,
     isAdjacentToEmpty,
     moveTile,
     resetBoard,

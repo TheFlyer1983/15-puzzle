@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard, startNewGame } = usePuzzleBoard();
+const { tiles, moves, isComplete, isAdjacentToEmpty, moveTile, resetBoard, startNewGame } =
+  usePuzzleBoard();
+
+const moveLabel = computed(() => (moves.value === 1 ? 'move' : 'moves'));
 </script>
 
 <template>
@@ -19,10 +22,10 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard, startNewGame } = 
             <template v-for="(tile, index) in tiles" :key="index">
               <UButton
                 v-if="tile"
-                :disabled="!isAdjacentToEmpty(index)"
+                :disabled="isComplete || !isAdjacentToEmpty(index)"
                 :class="[
                   'aspect-square justify-center rounded-2xl border bg-slate-700/90 text-2xl font-bold text-slate-100 shadow-lg shadow-black/30 transition hover:bg-slate-600/90',
-                  isAdjacentToEmpty(index)
+                  !isComplete && isAdjacentToEmpty(index)
                     ? 'border-primary-200 ring-primary-300/60 -translate-y-0.5 cursor-pointer ring-2'
                     : 'cursor-not-allowed border-white/25'
                 ]"
@@ -45,6 +48,14 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard, startNewGame } = 
         <div class="flex items-center justify-between rounded-2xl bg-white/10 px-4 py-3">
           <span class="text-sm text-slate-300">Moves</span>
           <span aria-label="Move count" class="text-2xl font-bold">{{ moves }}</span>
+        </div>
+
+        <div
+          v-if="isComplete"
+          aria-live="polite"
+          class="border-primary-300/40 bg-primary-400/10 text-primary-100 rounded-2xl border px-4 py-3 text-center font-semibold shadow-lg shadow-black/20"
+        >
+          Puzzle complete! You solved it in {{ moves }} {{ moveLabel }}.
         </div>
 
         <div class="flex justify-center gap-3">

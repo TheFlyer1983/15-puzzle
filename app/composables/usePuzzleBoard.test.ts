@@ -10,6 +10,24 @@ import {
 } from './usePuzzleBoard';
 
 const moveableTiles: TileValue[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, null, 14, 15];
+const oneMoveFromSolvedTiles: TileValue[] = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  null,
+  15
+];
 const alwaysFirstRandom = () => 0;
 const alwaysLastRandom = () => 0.999_999;
 
@@ -133,6 +151,28 @@ describe('usePuzzleBoard', () => {
     expect(board.tiles.value).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, null, 15]);
     expect(board.emptyTileIndex.value).toBe(14);
     expect(board.moves.value).toBe(1);
+  });
+
+  it('detects when a valid move completes the puzzle', () => {
+    const board = usePuzzleBoard({ initialTiles: oneMoveFromSolvedTiles });
+
+    expect(board.isComplete.value).toBe(false);
+
+    board.moveTile(15);
+
+    expect(board.tiles.value).toEqual(solvedTiles);
+    expect(board.isComplete.value).toBe(true);
+    expect(board.moves.value).toBe(1);
+  });
+
+  it('ignores tile clicks after the puzzle is complete', () => {
+    const board = usePuzzleBoard({ initialTiles: solvedTiles });
+
+    board.moveTile(14);
+
+    expect(board.tiles.value).toEqual(solvedTiles);
+    expect(board.isComplete.value).toBe(true);
+    expect(board.moves.value).toBe(0);
   });
 
   it('ignores tile clicks that are not adjacent to the empty space', () => {
