@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="15 Puzzle">
+  <defs>
+    <linearGradient id="tile" x1="12" x2="52" y1="8" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#475569" />
+      <stop offset="1" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#020617" />
+  <rect x="8" y="8" width="48" height="48" rx="12" fill="url(#tile)" stroke="#bfdbfe" stroke-width="3" />
+  <text
+    x="32"
+    y="40"
+    fill="#f8fafc"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="27"
+    font-weight="800"
+    letter-spacing="-1"
+    text-anchor="middle"
+  >15</text>
+</svg>

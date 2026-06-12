@@ -1,23 +1,25 @@
-# Nuxt Minimal Starter
+# 15 Puzzle
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A Nuxt web app for playing the classic 15-puzzle. The goal is to arrange the numbered tiles from 1 to 15 by sliding them into the empty space until the board returns to solved order.
+
+The MVP focuses on a clean, playable puzzle experience: solvable boards, simple controls, move tracking, reset/new game actions, and a completion message when the puzzle is solved.
+
+## Gameplay
+
+The puzzle starts with an easy randomized board created by making valid moves from the solved layout. This keeps every game solvable while avoiding puzzles that are too difficult for the MVP.
+
+Click a tile next to the empty space to slide it into that space. Tiles that can move are highlighted, while tiles that cannot move are disabled. The move counter only increases after successful tile moves.
+
+When the tiles return to solved order, the game shows a completion message and disables further tile movement.
+
+Use **Reset** to return to the starting layout for the current game. Use **New game** to generate a fresh randomized puzzle.
 
 ## Setup
 
-Make sure to install dependencies:
+This project uses Node.js 22 or newer and pnpm.
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
 ## Development Server
@@ -25,51 +27,36 @@ bun install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## Build
 
 Build the application for production:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
 pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Preview the production build locally:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
 pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Quality Checks
+
+Run the test suite:
+
+```bash
+pnpm test
+```
+
+Run coverage, linting, formatting checks, and type checking:
+
+```bash
+pnpm test:coverage
+pnpm lint
+pnpm fmt:check
+pnpm typecheck
+```
