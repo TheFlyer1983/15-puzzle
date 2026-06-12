@@ -131,10 +131,13 @@ export function createRandomSolvableTiles(random: RandomSource = Math.random): T
 export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
   const random = options.random ?? Math.random;
   const getStartingTiles = () => options.initialTiles ?? createRandomSolvableTiles(random);
-  const startingTiles = ref<TileValue[]>([...getStartingTiles()]);
+  const shouldHydrateState = options.initialTiles === undefined && options.random === undefined;
+  const createState = <T>(key: string, initialValue: () => T) =>
+    shouldHydrateState ? useState<T>(key, initialValue) : ref<T>(initialValue());
+  const startingTiles = createState('puzzle-starting-tiles', () => [...getStartingTiles()]);
 
-  const tiles = ref<TileValue[]>([...startingTiles.value]);
-  const moves = ref(0);
+  const tiles = createState('puzzle-tiles', () => [...startingTiles.value]);
+  const moves = createState('puzzle-moves', () => 0);
 
   const emptyTileIndex = computed(() => tiles.value.findIndex((tile) => tile === null));
   const isComplete = computed(() => isSolved(tiles.value));
