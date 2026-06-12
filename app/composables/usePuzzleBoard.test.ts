@@ -19,6 +19,12 @@ function createSequenceRandom(values: number[]) {
   return () => values[index++] ?? 0;
 }
 
+function createRepeatingSequenceRandom(values: number[]) {
+  let index = 0;
+
+  return () => values[index++ % values.length] ?? 0;
+}
+
 describe('usePuzzleBoard', () => {
   it('creates an easy randomized solvable board from valid moves', () => {
     const tiles = createRandomSolvableTiles(alwaysFirstRandom);
@@ -40,9 +46,32 @@ describe('usePuzzleBoard', () => {
     expect(twentyMoveTiles).toEqual([1, 2, 3, 4, 5, 6, 7, 8, null, 12, 15, 14, 11, 10, 9, 13]);
   });
 
-  it('retries when random choices leave the board solved', () => {
-    const invalidMoveChoices = Array.from({ length: 10 }, () => 1);
-    const random = createSequenceRandom([0, ...invalidMoveChoices, 0]);
+  it('throws when the random source returns out-of-range values', () => {
+    expect(() => createRandomSolvableTiles(() => Number.NaN)).toThrow(
+      'RandomSource must return a finite number in the range [0, 1).'
+    );
+    expect(() => createRandomSolvableTiles(createSequenceRandom([0, 1]))).toThrow(
+      'RandomSource must return a finite number in the range [0, 1).'
+    );
+  });
+
+  it('retries with valid random choices when a scramble leaves the board solved', () => {
+    const solvedCycleChoices = [
+      2 / 11,
+      0.999_999,
+      0,
+      0.999_999,
+      0.999_999,
+      0,
+      0,
+      0.999_999,
+      0.999_999,
+      0,
+      0,
+      0.999_999,
+      0.999_999
+    ];
+    const random = createSequenceRandom([...solvedCycleChoices, 0]);
 
     const tiles = createRandomSolvableTiles(random);
 
@@ -50,11 +79,40 @@ describe('usePuzzleBoard', () => {
     expect(isSolvable(tiles)).toBe(true);
   });
 
+  it('fails fast when valid random choices repeatedly leave the board solved', () => {
+    const solvedCycleChoices = [
+      2 / 11,
+      0.999_999,
+      0,
+      0.999_999,
+      0.999_999,
+      0,
+      0,
+      0.999_999,
+      0.999_999,
+      0,
+      0,
+      0.999_999,
+      0.999_999
+    ];
+    const random = createRepeatingSequenceRandom(solvedCycleChoices);
+
+    expect(() => createRandomSolvableTiles(random)).toThrow(
+      'Unable to create a randomized puzzle board after repeated attempts.'
+    );
+  });
+
   it('detects unsolvable layouts', () => {
     const unsolvableTiles: TileValue[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14, null];
 
     expect(isSolvable(solvedTiles)).toBe(true);
     expect(isSolvable(unsolvableTiles)).toBe(false);
+  });
+
+  it('only treats complete solved layouts as solved', () => {
+    expect(isSolved(solvedTiles)).toBe(true);
+    expect(isSolved([])).toBe(false);
+    expect(isSolved([1, 2, 3, 4])).toBe(false);
   });
 
   it('starts with a randomized board by default', () => {
