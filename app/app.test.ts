@@ -10,12 +10,17 @@ describe('App', () => {
     expect(wrapper.text()).toContain('15 Puzzle');
     expect(wrapper.text()).not.toContain('Nuxt Welcome');
     expect(wrapper.text()).toContain('Moves');
+    expect(wrapper.text()).toContain('Reset');
+    expect(wrapper.text()).toContain('New game');
     expect(wrapper.get('[aria-label="Move count"]').text()).toBe('0');
-    expect(wrapper.findAll('button')).toHaveLength(16);
+    expect(wrapper.findAll('button')).toHaveLength(17);
 
-    const tileFourteen = wrapper.findAll('button').find((button) => button.text() === '14');
-    expect(tileFourteen).toBeTruthy();
-    await tileFourteen!.trigger('click');
+    const movableTile = wrapper
+      .findAll('button')
+      .find((button) => /^\d+$/.test(button.text()) && button.attributes('disabled') === undefined);
+
+    expect(movableTile).toBeTruthy();
+    await movableTile!.trigger('click');
 
     expect(wrapper.get('[aria-label="Move count"]').text()).toBe('1');
     expect(wrapper.find('div[aria-hidden="true"].border-dashed').exists()).toBe(true);
