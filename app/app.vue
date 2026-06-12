@@ -19,12 +19,12 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard
             <template v-for="(tile, index) in tiles" :key="tile ?? 'empty'">
               <UButton
                 v-if="tile"
-                :aria-disabled="!isAdjacentToEmpty(index)"
+                :disabled="!isAdjacentToEmpty(index)"
                 :class="[
-                  'aspect-square justify-center rounded-2xl border bg-slate-700/90 text-2xl font-bold text-slate-100 shadow-lg shadow-black/30 transition hover:bg-slate-700/90',
+                  'aspect-square justify-center rounded-2xl border bg-slate-700/90 text-2xl font-bold text-slate-100 shadow-lg shadow-black/30 transition hover:bg-slate-600/90',
                   isAdjacentToEmpty(index)
-                    ? 'border-primary-200 ring-primary-300/60 -translate-y-0.5 ring-2'
-                    : 'border-white/25'
+                    ? 'border-primary-200 ring-primary-300/60 -translate-y-0.5 cursor-pointer ring-2'
+                    : 'cursor-not-allowed border-white/25'
                 ]"
                 color="primary"
                 size="xl"
@@ -35,9 +35,8 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard
               </UButton>
               <div
                 v-else
-                aria-label="Empty puzzle space"
+                aria-hidden="true"
                 class="aspect-square rounded-2xl border border-dashed border-white/20 bg-slate-950/60"
-                role="img"
               ></div>
             </template>
           </div>
@@ -48,9 +47,17 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard
           <span aria-label="Move count" class="text-2xl font-bold">{{ moves }}</span>
         </div>
 
-        <UButton block color="neutral" size="lg" variant="soft" @click="resetBoard">
-          Reset board
-        </UButton>
+        <div class="flex justify-center">
+          <UButton
+            class="hover:border-primary-200/60 hover:shadow-primary-950/30 cursor-pointer rounded-full border border-white/15 bg-slate-800/80 px-6 py-2.5 font-semibold text-slate-100 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-700/90 hover:text-white"
+            color="neutral"
+            size="lg"
+            variant="ghost"
+            @click="resetBoard"
+          >
+            Reset board
+          </UButton>
+        </div>
       </section>
     </main>
   </UApp>

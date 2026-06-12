@@ -18,6 +18,6 @@ describe('App', () => {
     await tileFourteen!.trigger('click');
 
     expect(wrapper.get('[aria-label="Move count"]').text()).toBe('1');
-    expect(wrapper.find('[aria-label="Empty puzzle space"]').exists()).toBe(true);
+    expect(wrapper.find('div[aria-hidden="true"].border-dashed').exists()).toBe(true);
   });
 });
