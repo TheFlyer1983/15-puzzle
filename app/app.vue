@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { tiles, moves, isComplete, isAdjacentToEmpty, moveTile, resetBoard, startNewGame } =
   usePuzzleBoard();
+
+const moveLabel = computed(() => (moves.value === 1 ? 'move' : 'moves'));
 </script>
 
 <template>
@@ -53,7 +55,7 @@ const { tiles, moves, isComplete, isAdjacentToEmpty, moveTile, resetBoard, start
           aria-live="polite"
           class="border-primary-300/40 bg-primary-400/10 text-primary-100 rounded-2xl border px-4 py-3 text-center font-semibold shadow-lg shadow-black/20"
         >
-          Puzzle complete! You solved it in {{ moves }} moves.
+          Puzzle complete! You solved it in {{ moves }} {{ moveLabel }}.
         </div>
 
         <div class="flex justify-center gap-3">

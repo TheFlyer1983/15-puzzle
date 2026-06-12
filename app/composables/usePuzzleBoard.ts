@@ -132,8 +132,19 @@ export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
   const random = options.random ?? Math.random;
   const getStartingTiles = () => options.initialTiles ?? createRandomSolvableTiles(random);
   const shouldHydrateState = options.initialTiles === undefined && options.random === undefined;
-  const createState = <T>(key: string, initialValue: () => T) =>
-    shouldHydrateState ? useState<T>(key, initialValue) : ref<T>(initialValue());
+  const createState = <T>(key: string, initialValue: () => T) => {
+    if (!shouldHydrateState) {
+      return ref<T>(initialValue());
+    }
+
+    const state = useState<T>(key, initialValue);
+
+    if (state.value === undefined) {
+      state.value = initialValue();
+    }
+
+    return state;
+  };
   const startingTiles = createState('puzzle-starting-tiles', () => [...getStartingTiles()]);
 
   const tiles = createState('puzzle-tiles', () => [...startingTiles.value]);
