@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard();
+const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard, startNewGame } = usePuzzleBoard();
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard
 
         <div class="rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur">
           <div class="grid grid-cols-4 gap-3">
-            <template v-for="(tile, index) in tiles" :key="tile ?? 'empty'">
+            <template v-for="(tile, index) in tiles" :key="index">
               <UButton
                 v-if="tile"
                 :disabled="!isAdjacentToEmpty(index)"
@@ -47,7 +47,7 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard
           <span aria-label="Move count" class="text-2xl font-bold">{{ moves }}</span>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center gap-3">
           <UButton
             class="hover:border-primary-200/60 hover:shadow-primary-950/30 cursor-pointer rounded-full border border-white/15 bg-slate-800/80 px-6 py-2.5 font-semibold text-slate-100 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-700/90 hover:text-white"
             color="neutral"
@@ -55,7 +55,17 @@ const { tiles, moves, isAdjacentToEmpty, moveTile, resetBoard } = usePuzzleBoard
             variant="ghost"
             @click="resetBoard"
           >
-            Reset board
+            Reset
+          </UButton>
+
+          <UButton
+            class="hover:border-primary-200/60 hover:shadow-primary-950/30 cursor-pointer rounded-full border border-white/15 bg-slate-800/80 px-6 py-2.5 font-semibold text-slate-100 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-700/90 hover:text-white"
+            color="neutral"
+            size="lg"
+            variant="ghost"
+            @click="startNewGame"
+          >
+            New game
           </UButton>
         </div>
       </section>
