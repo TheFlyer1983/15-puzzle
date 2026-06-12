@@ -12,6 +12,7 @@ describe('App', () => {
     expect(wrapper.text()).toContain('Moves');
     expect(wrapper.text()).toContain('Reset');
     expect(wrapper.text()).toContain('New game');
+    expect(wrapper.text()).not.toContain('Puzzle complete!');
     expect(wrapper.get('[aria-label="Move count"]').text()).toBe('0');
     expect(wrapper.findAll('button')).toHaveLength(17);
 

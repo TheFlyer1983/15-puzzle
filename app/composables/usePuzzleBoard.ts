@@ -137,6 +137,7 @@ export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
   const moves = ref(0);
 
   const emptyTileIndex = computed(() => tiles.value.findIndex((tile) => tile === null));
+  const isComplete = computed(() => isSolved(tiles.value));
 
   function isAdjacentToEmpty(index: number) {
     const tilePosition = getTilePosition(index);
@@ -150,7 +151,7 @@ export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
   }
 
   function moveTile(index: number) {
-    if (!isAdjacentToEmpty(index)) {
+    if (isComplete.value || !isAdjacentToEmpty(index)) {
       return;
     }
 
@@ -183,6 +184,7 @@ export function usePuzzleBoard(options: UsePuzzleBoardOptions = {}) {
     tiles: readonly(tiles),
     moves: readonly(moves),
     emptyTileIndex,
+    isComplete,
     isAdjacentToEmpty,
     moveTile,
     resetBoard,
