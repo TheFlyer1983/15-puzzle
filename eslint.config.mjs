@@ -1,0 +1,26 @@
+// @ts-check
+import withNuxt from './.nuxt/eslint.config.mjs';
+import oxlint from 'eslint-plugin-oxlint';
+import process from 'node:process';
+
+export default withNuxt(
+  // Your custom configs here
+  {
+    rules: {
+      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      'vue/html-self-closing': [
+        'error',
+        {
+          html: {
+            void: 'always',
+            normal: 'never',
+            component: 'always'
+          }
+        }
+      ]
+    }
+  },
+
+  ...oxlint.buildFromOxlintConfigFile('./.oxlintrc.json')
+);

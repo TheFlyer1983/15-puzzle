@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import", "unicorn", "vue", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "warn"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "vue": true
+  },
+  "ignorePatterns": [".nuxt/**", ".output/**", "dist/**", "coverage/**"],
+  "overrides": [
+    {
+      "files": ["**/*.{test,spec}.ts", "**/*.nuxt.test.ts"],
+      "env": {
+        "vitest": true
+      },
+      "rules": {
+        "vitest/require-mock-type-parameters": "off"
+      }
+    }
+  ]
+}
