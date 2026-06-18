@@ -13,7 +13,6 @@ jobs:
     steps:
       - name: Assign issue to project backlog
         uses: srggrs/assign-one-project-github-action@65a8ddab497df42ef268001e67bbf976f8fd39e1
-        if: github.event.action == 'opened'
         with:
           project: https://github.com/users/TheFlyer1983/projects/6
           column_name: Backlog
