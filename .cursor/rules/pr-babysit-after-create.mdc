@@ -1,0 +1,18 @@
+---
+description: Automatically babysit PRs after creating them
+alwaysApply: true
+---
+
+# PR Babysitting
+
+When the user asks the agent to create a pull request, after the PR is created:
+
+- Start babysitting that PR automatically unless the user explicitly asks not to.
+- Pull the latest branch state, then check unresolved GitHub review comments, CodeRabbit comments, mergeability, and CI status.
+- Fix valid actionable comments that are clearly within the scope of the PR.
+- Push scoped fixes to the PR branch, then continue babysitting because new commits can trigger fresh CI and review comments.
+- Keep monitoring on a short loop until the PR is merge-ready and CodeRabbit's updated review comment explicitly says there are no actionable comments, or until the user asks to stop. Do not rely on CodeRabbit's status check alone.
+- If CodeRabbit says review is paused or rate-limited, do not add a GitHub Actions scheduler. Use a Cursor loop for that PR, wait until the retry window expires, then comment `@coderabbitai review` once.
+- Report comments that are ambiguous, invalid, unrelated to the PR, or require product/owner approval instead of guessing.
+
+Do not merge the PR unless the user explicitly asks.

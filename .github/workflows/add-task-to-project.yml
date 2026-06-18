@@ -1,0 +1,18 @@
+name: Add New Task to Project
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-task-to-project:
+    name: Add task to project backlog
+    runs-on: ubuntu-latest
+    env:
+      MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+    steps:
+      - name: Assign issue to project backlog
+        uses: srggrs/assign-one-project-github-action@65a8ddab497df42ef268001e67bbf976f8fd39e1
+        with:
+          project: https://github.com/users/TheFlyer1983/projects/6
+          column_name: Backlog
