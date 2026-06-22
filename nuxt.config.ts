@@ -9,7 +9,11 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
     }
   },
-  modules: ['@nuxt/eslint', '@nuxt/ui'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxtjs/supabase'],
+  supabase: {
+    redirect: false,
+    types: false
+  },
   css: ['./app/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()]

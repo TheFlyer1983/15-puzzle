@@ -22,6 +22,32 @@ This project uses Node.js 22 or newer and pnpm.
 pnpm install
 ```
 
+Copy the example environment file and fill in the public Supabase project values:
+
+```bash
+cp .env.example .env
+```
+
+`NUXT_PUBLIC_SUPABASE_URL` should use the project API URL. `NUXT_PUBLIC_SUPABASE_KEY` should use the publishable/anon key only. Do not add Supabase service role or secret keys to `.env` values that use the `NUXT_PUBLIC_` prefix.
+
+## Supabase Auth
+
+Create or select a Supabase project, then configure Auth before deploying features that use sign-in:
+
+1. In **Authentication > Providers**, enable the Email provider.
+2. Keep email confirmation enabled for new registrations.
+3. In **Authentication > URL Configuration**, set the Site URL to the production app URL.
+4. Add Redirect URLs for local development and production:
+
+```text
+http://localhost:3000
+http://localhost:3000/**
+https://your-production-domain.example
+https://your-production-domain.example/**
+```
+
+The Nuxt Supabase module is configured with global auth redirects disabled, so the puzzle remains playable for signed-out users.
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
